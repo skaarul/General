@@ -1,0 +1,56 @@
+USE [BBname]
+GO
+/****** Object:  StoredProcedure [B2B].[RefreshUpdateprocess]    Script Date: 13/12/2018 06:48:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:    <Author,,Name>
+-- Create date: 14-Aug-2017
+-- Description:your comments
+-- =============================================
+Create PROCEDURE [B2B].[RefreshUpdateprocess] (@IsRefresh bit)
+AS
+BEGIN
+  SET NOCOUNT ON;
+  BEGIN TRY
+    BEGIN TRANSACTION
+      -- Refresh the table if  @IsRefresh is true
+      IF (@IsRefresh = 'true')
+      BEGIN
+        --Refresh the table 
+        --Truncate last backup 
+     
+
+
+      END
+      ELSE
+      BEGIN
+      
+
+      END
+    --Commit transction if no error
+    COMMIT TRANSACTION
+  END TRY
+  BEGIN CATCH
+
+    DECLARE @ErrorMessage nvarchar(max);
+    DECLARE @ErrorSeverity int;
+    DECLARE @ErrorState int;
+
+    SELECT
+      @ErrorMessage = ERROR_MESSAGE(),
+      @ErrorSeverity = ERROR_SEVERITY(),
+      @ErrorState = ERROR_STATE();
+    -- Roll back transaction incase of error
+    ROLLBACK
+
+    RAISERROR (@ErrorMessage,
+    @ErrorSeverity,
+    @ErrorState
+    );
+
+  END CATCH
+  SET NOCOUNT OFF;
+END
